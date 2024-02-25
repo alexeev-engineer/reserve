@@ -1,6 +1,6 @@
 import os
 from uuid import uuid4
-from reverse.compressor import BZ2
+from reverse.compressor import BZ2, LZMA
 
 
 class BackupFile:
@@ -26,7 +26,12 @@ class BackupFile:
 		if self.compress_method == 'bz2':
 			archive = BZ2(self.filepath, f'{self.file_uuid}.bz2')
 			archive.compress()
-			print(f'[{self.file_uuid}] {self.filepath} compressed via bz2 ({self.filepath}.bz)')
+			print(f'[{self.file_uuid}] {self.filepath} compressed via bz2 ({self.filepath}.bz2)')
+			os.system(f'rm {self.filepath}')
+		elif self.compress_method == 'lzma':
+			archive = LZMA(self.filepath, f'{self.file_uuid}.lz')
+			archive.compress()
+			print(f'[{self.file_uuid}] {self.filepath} compressed via lzma ({self.filepath}.lz)')
 			os.system(f'rm {self.filepath}')
 		else:
 			print('Error: unknown compress method')
@@ -36,8 +41,13 @@ class BackupFile:
 		if self.compress_method == 'bz2':
 			archive = BZ2(self.filepath, f'{self.file_uuid}.bz2')
 			archive.decompress()
-			print(f'[{self.file_uuid}] {self.filepath} decompressed via bz2 ({self.filepath}.bz)')
+			print(f'[{self.file_uuid}] {self.filepath} decompressed via bz2 ({self.filepath})')
 			os.system(f'rm {self.file_uuid}.bz2')
+		elif self.compress_method == 'lzma':
+			archive = LZMA(self.filepath, f'{self.file_uuid}.lz')
+			archive.decompress()
+			print(f'[{self.file_uuid}] {self.filepath} decompressed via lzma ({self.filepath})')
+			os.system(f'rm {self.file_uuid}.lz')
 		else:
 			print('Error: unknown compress method')
 			return False

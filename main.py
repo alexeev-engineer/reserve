@@ -3,7 +3,7 @@ from reverse.backup import BackupFile
 
 
 def main():
-	backup = BackupFile('data')
+	backup = BackupFile('data', compress_method='lzma')
 	backup.save()
 	backup.unpack()
 
